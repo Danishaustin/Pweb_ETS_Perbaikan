@@ -4,6 +4,7 @@ $(document).ready(function () {
         method: 'GET',
         success: function (data) {
             console.log("Data received from API:", data);
+            displayHeader(data);
             displayBerita(data);
         },
         error: function (error) {
@@ -31,6 +32,30 @@ $(document).ready(function () {
             });
     
             $('#beritaList').html(output);
+        } else {
+            console.error("Invalid data format: ", data);
+        }
+    }
+
+    function displayHeader(data) {
+        if (data && data.data) {
+            const headerData = data.data;
+
+            let output = `
+                <header id="news-header" class="mb-4">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+                        <a class="navbar-brand" href="${headerData.link}">
+                            <img src="${headerData.image}" alt="${headerData.title}" height="40" class="d-inline-block align-top">
+                        </a>
+                        <h5 class="mb-0 text-danger">${headerData.title}</h5>
+                        <span class="navbar-text">
+                            ${headerData.description}
+                        </span>
+                    </nav>
+                </header>
+            `;
+    
+            $('#news-header').html(output);
         } else {
             console.error("Invalid data format: ", data);
         }
